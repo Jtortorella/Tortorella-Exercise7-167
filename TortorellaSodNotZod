@@ -1,0 +1,315 @@
+//AUTHOR: JESSE TORTORELLA
+//COURSE: CPT167
+//PURPOSE:TO CREATE A PROGRAM THAT CAN CALCULATE THE TOTAL OF ANY TRANSACTION. IT MUST SHOW THE ITEM NAME, ORIGINAL PRICE FOR THE ITEM, THE DISCOUNT PRICE OF THE ITEM, THE NUMBER OF THE ITEM(S) PURCHASED, SUBTOTAL, TAX, DISCOUNT RATE, TYPE OF DISCOUNT, AND TOTAL COST OF THE TRANSACTION. AT THE CONCLUSION OF THIS PROGRAM IT SHOULD RETURN A RECIEPT AND A FINAL REPORT OF THE TOTAL SALES AND TALLIES OF TYPES OF DISCOUNTS USED.
+//SEPTEMBER 24, 2020
+
+package edu.cpt167.tortorella.excercise6;
+
+import java.util.Scanner;
+
+public class TortorellaMainClass {
+	// Final or Constant values are placed at the beginning of the Main Class so all methods can access them in calculations and menus.
+	public static final double TAX_RATE = 0.075; //From prompt, final as tax rate is a constant.
+	public static final String DISCOUNT_NAME_MEMBER = "Member"; //From prompt, final as the Member's Discount Class is a constant.
+	public static final String DISCOUNT_NAME_SENIOR = "Senior"; //From prompt, final as the Senior's Discount Class is a constant.
+	public static final String DISCOUNT_NAME_NONE = "No Discount"; //From prompt, final as the No Discount Class is a constant.
+	public static final String DISCOUNT_NAME_QUIT = "Quit"; //From prompt, gives users the option to quit as a menu option.
+	public static final double DISCOUNT_RATE_MEMBER = 0.15; //From prompt, final as the Member's Discount is a constant.
+	public static final double DISCOUNT_RATE_SENIOR = 0.25; //From prompt, final as the Senior's Discount is a constant.
+	public static final double DISCOUNT_RATE_NONE = 0.00; //From prompt, final as the No Discount is a constant.
+	public static final String ITEM_NAME_PREMIUM = "Bargain Bin Sod"; //name of item, final as it is a fixed value.
+	public static final String ITEM_NAME_SPECIAL = "Vegan Bin Sod"; //name of item, final as it is a fixed value.
+	public static final String ITEM_NAME_BASIC = "All-Natural Best Sod"; //name of item, final as it is a fixed value.
+	public static final String ITEM_NAME_RETURN = "Return to Main Menu"; //From prompt, gives users the option to return to the previous menu.
+	public static final double ITEM_PRICE_PREMIUM = 55.95; //price of item, final as it is a fixed value.
+	public static final double ITEM_PRICE_SPECIAL = 24.95; //price of item, final as it is a fixed value.
+	public static final double ITEM_PRICE_BASIC = 15.95; //price of item, final as it is a fixed value.
+
+	public static void main(String[] args) //Creates the main Method. 
+	{
+
+		Scanner input = new Scanner(System.in); 
+
+		// Declaring/Initialize Variables to be used in program.
+		String userName = ""; //User's name. Blank as it requires an input from user.
+		char rateSelection = ' '; //Used to save response from menu based on user's input.
+		char itemSelection = ' '; //Used to save response from menu based on user's input.
+		int howMany = 0; //Quantity of a given item. Blank as it requires an input from user.
+		String discountName = "";
+		double discountRate = 0.00; //Discount rate (if applicable) for the customer, determined by the user's menu selection.
+		String itemName = ""; //Name of product chosen, for use by the menu.
+		double itemPrice = 0.00; //Price of product, determined by menu selection
+		double discountAmount = 0.00;
+		double discountPrice = 0.00;
+		double subTotal = 0.00;
+		double tax = 0.00;
+		double totalCost = 0.00;
+		double grandTotal = 0.00; //To be determined by processes
+		int memberCount = 0; //Grand tally of this type of customer, to be used in the final report.
+		int seniorCount = 0; //Grand tally of this type of customer, to be used in the final report.
+		int noDiscountCount = 0; //Grand tally of this type of customer, to be used in the final report.
+		int premiumCount = 0;
+		int specialCount = 0;
+		int basicCount = 0;
+		double purchaseAmt = 0.00;
+		//Greeting and input.
+		displayWelcomeBanner(); //Displays the Welcome Banner a method created below.
+
+		userName = getUserName(input); //Gets the User's name through a method created below, assigns it into a variable to the left of the =.
+
+		rateSelection = validateMainMenu(input); //Gets and validates the rate selection chosen, assigns it into a variable to the left of the =.
+
+		while (rateSelection != 'Q') //If the user has not chosen to quit, the program will continue down this path.
+		{
+			itemSelection = validateItemMenu(input); //Gets and validates the item selection chosen, assigns it into a variable to the left of the =.
+
+			while (itemSelection != 'R') //If the user has not chosen to return to main menu, the program will continue down the code below.
+			{
+				howMany = validateHowMany(input); //Get and validates the amount of the item the customer chooses, stores it into a variable created above.
+
+				//Decision Structure processes.
+				if (rateSelection == 'A') 
+				{ //Boolean value, if the user selected A, the discount rate will become the member's rate, therefore the user's selection gives the customer the discount.
+					discountName = DISCOUNT_NAME_MEMBER;
+					discountRate = DISCOUNT_RATE_MEMBER;
+					memberCount++; //This will keeps a tally of how often this option was selected. 
+				}
+				else if (rateSelection == 'B') //Boolean value, if the user selected B, the discount rate will become the senior's rate, therefore the user's selection gives the customer the discount.
+				{
+					discountName = DISCOUNT_NAME_SENIOR;
+					discountRate = DISCOUNT_RATE_SENIOR;
+					seniorCount++; //This will keeps a tally of how often this option was selected. 
+				}
+				else //Boolean value, if the user selected any other value besides A or B, the discount rate will become the no discount rate, therefore the user's selection gives the customer no discount.
+				{
+					discountName = DISCOUNT_NAME_NONE;
+					discountRate = DISCOUNT_RATE_NONE;
+					noDiscountCount++; //This will keeps a tally of how often this option was selected. 
+				}
+				if (itemSelection == 'A') //Boolean value, if the user selected A, the item price will become the item selected price and name, therefore the user's selection gives the customer the item's price and name.
+				{ 
+					itemPrice = ITEM_PRICE_PREMIUM;
+					itemName = ITEM_NAME_PREMIUM;
+					premiumCount++; //This will keeps a tally of how often this option was selected. 
+				} 
+				else if (itemSelection == 'B') //Boolean value, if the user selected B, the item price will become the item selected price and name, therefore the user's selection gives the customer the item's price and name.
+				{
+					itemPrice = ITEM_PRICE_SPECIAL;
+					itemName = ITEM_NAME_SPECIAL;
+					specialCount++; //This will keeps a tally of how often this option was selected. 
+				}
+				else //Boolean value, if the user selected any other value besides A or B, the item price will become the item selected price and name, therefore the user's selection gives the customer the item's price and name.
+				{
+					itemPrice = ITEM_PRICE_BASIC;
+					itemName = ITEM_NAME_BASIC;
+					basicCount++; //This will keeps a tally of how often this option was selected. 
+				}
+
+				//Processes
+				discountAmount = itemPrice * discountRate; //Multiplies the original price by the discount rate to give the discount per one unit of the item.
+				discountPrice = itemPrice - discountAmount; //Subtracts the discount from the original price to give the price of the item with the discount.
+				purchaseAmt = howMany * discountPrice; //Another word for subTotal, subtotal in this program is used for a different program.
+				subTotal = subTotal + purchaseAmt; //Multiplies the quantity by the discount price to give the sub total or total without tax. This will tally all the purchases to determine the grand total.
+				discountAmount = itemPrice * discountRate; //Multiplies the original price by the discount rate to give the discount per one unit of the item.
+				discountPrice = itemPrice - discountAmount; //Subtracts the discount from the original price to give the price of the item with the discount.
+
+				displayItemReceipt(itemName, itemPrice, discountName, discountRate, discountAmount, discountPrice, howMany, purchaseAmt, subTotal); //This will display the Item Receipt, to do so we would need to take the values listed to create it. We enter it as parameters or values that can be passed into the method.
+
+				itemSelection = validateItemMenu(input); //Gets and validates the item selection chosen, stores it into the variable to the left of the =.
+			}
+			//Processes
+			tax = subTotal * TAX_RATE; //This will give us the amount of money needed for tax.
+			totalCost = subTotal + tax; //This will give use the total amount of money customer will need for the purchase.
+			grandTotal = grandTotal + totalCost; //Tally of total amount of money spent at the establishment.
+
+			displayOrderTotal(userName, subTotal, tax, totalCost);
+
+			subTotal = 0; //Resets the subtotal once q is selected. the values are saved in grand total.
+
+			rateSelection = validateMainMenu(input); //Gets and validates the rate selection chosen, stores it into a variable created above. This is listed twice to keep the program in a constant loop.
+		}
+		if (grandTotal > 0.00) //If any item and rate were selected via this application you will get a final report.
+		{
+			displayFinalReport(memberCount, seniorCount, noDiscountCount, premiumCount, specialCount, basicCount, grandTotal); //Final report shows the grand total and tally of types of customers, to show it. We enter values needed above as parameters or values that can be passed into the method.
+		}
+		displayFarewellMessage(); //Displays farewell message, a method created below.
+
+		input.close(); //Closes scanner
+	}
+	//Void Methods
+	//Method 1
+	public static void displayWelcomeBanner () //This method does not return a value so it is a void method.
+	{
+		System.out.println("Welcome To Snod Not Zod!"); //Welcome
+		System.out.println("This is a program that will determine:"); //Purpose
+		System.out.println("item, price, quantity and eligible discounts."); //Purpose
+		System.out.println("At the end of this program you will recieve a reciept."); //Purpose
+		System.out.println("If you press 'Q' it will determine:"); //Purpose
+		System.out.println("tallies of the discounts used, items purchased and grand total."); //Purpose
+		System.out.println("Let's Begin!"); //Purpose
+	}
+
+	//Method 2
+	public static void displayFarewellMessage () //This method does not return a value so it is a void method.
+	{
+		System.out.printf("%-60s\n", "We hope you enjoyed our application!"); //Farewell
+		System.out.printf("%-60s\n", "Have a great day!"); //Farewell
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt.	
+	}
+
+	//Method 3
+	public static void displayItemMenu () //This method does not return a value so it is a void method.
+	{
+		System.out.printf("%-60s\n", "Please refer to our menu to determine the price of your item!"); //Explanation
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt
+		System.out.printf("%-16s\n", "PRICE MENU:"); //Menu Title
+		System.out.printf("%-8s%-24s%-2s%5.2f\n", "[A] for", ITEM_NAME_PREMIUM, "$", ITEM_PRICE_PREMIUM); //Uses variable to show users the different products and prices of said products available.
+		System.out.printf("%-8s%-24s%-2s%5.2f\n", "[B] for", ITEM_NAME_SPECIAL, "$", ITEM_PRICE_SPECIAL); //Uses variable to show users the different products and prices of said products available.
+		System.out.printf("%-8s%-24s%-2s%5.2f\n", "[C] for", ITEM_NAME_BASIC, "$", ITEM_PRICE_BASIC); //Uses variable to show users the different products and prices of said products available.
+		System.out.printf("%-8s%-12s\n", "[R] to", ITEM_NAME_RETURN); //Option to return to the previous menu.
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt
+		System.out.printf("%-60s\n","Enter your selection here: "); //Prompts user to enter the product they are purchasing.
+	}
+
+	//Method 4
+	public static void displayItemReceipt (String itemName, double itemPrice, String discountName, double discountRate,double discountAmount, double discountPrice, int howMany, double purchaseAmount, double subTotal) //This method does not return a value so it is a void method. We enter values needed above as parameters or values that can be passed into the method.
+	{
+		// Output
+		// Formatting I made four columns for 1) The title of value, 2) Whether the value was of monetary value, (3) the value, and (4) whether the value was a percentage.
+		// I set the column widths to the maximum value possible and added 1 for padding. I aligned them according to the formatting provided in the exercise 4 pdf.
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt.
+		System.out.printf("%-8s\n", "RECIEPT"); //Formatting from prompt.
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt.
+		System.out.printf("%-18s%-16s\n", "Item Name", itemName); //Gives the item's name
+		System.out.printf("%-18s%-2s%6.2f%2s\n", "Original Price:", "$", itemPrice, ""); //Gives the price of the item.
+		System.out.printf("%-18s%-16s\n", "Discount Type:", discountName); //Gives the discount rate used by the customer.
+		System.out.printf("%-18s%-2s%6.1f%2s\n", "Discount Rate:", "", discountRate * 100, "%"); //Gives the discount rate as dictated by the menu above.
+		System.out.printf("%-18s%-2s%6.2f%2s\n", "Discount Amount:", "$", discountAmount, ""); //Multiplies the original price by the discount rate to give the savings per one unit of the item.
+		System.out.printf("%-18s%-2s%6.2f%2s\n", "Discounted Price:", "$", discountPrice, ""); //Subtracts the discount from the original price to give the price of a single unit of the item with the discount.
+		System.out.printf("%-18s%-2s%6d%2s\n", "Quantity:", "", howMany, ""); //Gives the discount rate as dictated by the menu above.
+
+		System.out.printf("%-18s%-2s%6.2f%2s\n", "Purchase Amount:", "$", purchaseAmount, ""); //Multiplies the original price by the discount rate to give the savings per one unit of the item.
+		System.out.printf("%-18s%-2s%6.2f%2s\n", "Subtotal:", "$", subTotal, ""); //Gives the total amount of money needed before tax.
+	}
+
+	//Method 5
+	public static void displayOrderTotal(String userName, double subTotal, double tax, double totalCost) //This method does not return a value so it is a void method. We enter values needed above as parameters or values that can be passed into the method.
+	{
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt.
+		System.out.printf("%-8s\n", "Order Report"); //Formatting from prompt.
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt.
+		System.out.printf("%-18s%-16s\n", "User:", userName); //Gives the item's name
+		System.out.printf("%-18s%-2s%6.2f%2s\n", "Sub Total:", "$", subTotal, ""); //Gives the price of the item.
+		System.out.printf("%-18s%-2s% 6.2f\n", "Tax:", "$", tax); //Gives the discount rate used by the customer.
+		System.out.printf("%-18s%-2s%6.2f%2s\n", "Total Cost:", "$", totalCost, ""); //Multiplies the original price by the discount rate to give the savings per one unit of the item.
+	}
+
+	//Method 6
+	public static void displayFinalReport (int memberCount, int seniorCount, int noDiscountCount, int premiumCount, int specialCount, int basicCount, double grandTotal) //This method does not return a value so it is a void method. We enter values needed above as parameters or values that can be passed into the method.
+	{
+		System.out.printf("%-20s%-2s%7d\n",DISCOUNT_NAME_SENIOR, "", seniorCount); //Grand tally of total senior discounts used.
+		System.out.printf("%-20s%-2s%7d\n",DISCOUNT_NAME_MEMBER, "", memberCount); //Grand tally of total member discounts used.
+		System.out.printf("%-20s%-2s%7d\n",DISCOUNT_NAME_NONE, "", noDiscountCount); //Grand tally of total no discounts used.
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt.
+		System.out.printf("%-20s%-2s%7d\n",ITEM_NAME_PREMIUM, "", premiumCount); //Grand tally of total premium items bought.
+		System.out.printf("%-20s%-2s%7d\n",ITEM_NAME_SPECIAL, "", specialCount); //Grand tally of total special items bought.
+		System.out.printf("%-20s%-2s%7d\n",ITEM_NAME_BASIC, "", basicCount); //Grand tally of total basic items bought.
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt.
+		System.out.printf("%-20s%-2s%7.2f\n", "Grand Total", "$", grandTotal); //Grand tally of total sales.
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt.
+	}
+
+	//Method 7
+	public static void displayMainMenu () //This method does not return a value so it is a void method.
+	{
+		System.out.printf("%-60s\n", "Refer to our menu to determine if you qualify for a discount!"); //Explanation
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt
+		System.out.printf("%-16s\n", "DISCOUNT MENU:"); //Menu Title
+		System.out.printf("%-8s%-12s%5.1f%-2s\n", "[A] for", DISCOUNT_NAME_MEMBER, DISCOUNT_RATE_MEMBER * 100, "%"); //Uses variable to show users the different discount classes and rates available.
+		System.out.printf("%-8s%-12s%5.1f%-2s\n", "[B] for", DISCOUNT_NAME_SENIOR, DISCOUNT_RATE_SENIOR * 100, "%"); //Uses variable to show users the different discount classes and rates available.
+		System.out.printf("%-8s%-12s%5.1f%-2s\n", "[C] for", DISCOUNT_NAME_NONE, DISCOUNT_RATE_NONE * 100, "%"); //Uses variable to show users the different discount classes and rates available.
+		System.out.printf("%-8s%-12s\n", "[Q] to", DISCOUNT_NAME_QUIT); //Option to quit.
+		System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt
+		System.out.printf("%-60s\n","Enter your selection here: "); //Prompts user to enter the Class of customer that they are.
+	}
+
+	//Value Returning Methods
+
+	//Method 8
+	public static String getUserName(Scanner input) //Uses Scanner to take input from user via method, value returning method.
+	{
+		String userName = ""; //User's name. Blank as it requires an input from user. Local variable.
+		System.out.println("What is your name?"); //Prompts user to enter user's name below.
+		userName = input.nextLine(); //Input via user.
+		return userName; //Returns the value of Username. 
+	}
+
+	//Method 9
+	public static char validateMainMenu (Scanner input) //Uses Scanner to take input from user via method, value returning method.
+	{
+		char rateSelection = ' '; //Blank as it requires an input from user. Local variable.
+		displayMainMenu(); //Calls the main menu method
+		rateSelection = input.next().toUpperCase().charAt(0); //Takes the user's response and 1) capitalizes it and 2) limits the response to the first character.
+		while (rateSelection != 'A' && rateSelection != 'B' && rateSelection != 'C' && rateSelection != 'Q') //If the user enters a selection then the ones decided it will display an error message and ask to re-enter a selection until the variable is changed to an applicable one.
+		{
+			System.out.println("Sorry that is an incorrect selection!"); //Error Message
+			System.out.println("Please try again."); //Error Message cont.
+			System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); 
+			System.out.printf("%-60s\n", "Refer to our menu to determine if you qualify for a discount!"); //Explanation
+			System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt
+			System.out.printf("%-16s\n", "DISCOUNT MENU:"); //Menu Title
+			System.out.printf("%-8s%-12s%5.1f%-2s\n", "[A] for", DISCOUNT_NAME_MEMBER, DISCOUNT_RATE_MEMBER * 100, "%"); //Uses variable to show users the different discount classes and rates available.
+			System.out.printf("%-8s%-12s%5.1f%-2s\n", "[B] for", DISCOUNT_NAME_SENIOR, DISCOUNT_RATE_SENIOR * 100, "%"); //Uses variable to show users the different discount classes and rates available.
+			System.out.printf("%-8s%-12s%5.1f%-2s\n", "[C] for", DISCOUNT_NAME_NONE, DISCOUNT_RATE_NONE * 100, "%"); //Uses variable to show users the different discount classes and rates available.
+			System.out.printf("%-8s%-12s\n", "[Q] to", DISCOUNT_NAME_QUIT); //Option to quit.
+			System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt
+			System.out.printf("%-60s\n","Enter your selection here: "); //Prompts user to enter the Class of customer that they are.
+			rateSelection = input.next().toUpperCase().charAt(0); //Takes the user's response and 1) capitalizes it and 2) limits the response to the first character.
+		}
+		return rateSelection; //Returns the char value of rateSelection.
+	}
+
+	//Method 10
+	public static char validateItemMenu (Scanner input) //Uses Scanner to take input from user via method, value returning method.
+	{
+		char itemSelection = ' '; //Blank as it requires an input from user. Local variable.
+		displayItemMenu(); //Calls the item menu method
+		itemSelection = input.next().toUpperCase().charAt(0); //Takes the user's response and 1) capitalizes it and 2) limits the response to the first character.
+		while (itemSelection != 'A' && itemSelection != 'B' && itemSelection != 'C' && itemSelection != 'R') //If the user enters a selection then the ones decided it will display an error message and ask to re-enter a selection until the variable is changed to an applicable one.
+		{
+			System.out.println("Sorry that is an incorrect selection!"); //Error Message
+			System.out.println("Please try again."); //Error Message cont.
+			System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			System.out.printf("%-60s\n", "Please refer to our menu to determine the price of your item!"); //Explanation
+			System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt
+			System.out.printf("%-16s\n", "PRICE MENU:"); //Menu Title
+			System.out.printf("%-8s%-24s%-2s%5.2f\n", "[A] for", ITEM_NAME_PREMIUM, "$", ITEM_PRICE_PREMIUM); //Uses variable to show users the different products and prices of said products available.
+			System.out.printf("%-8s%-24s%-2s%5.2f\n", "[B] for", ITEM_NAME_SPECIAL, "$", ITEM_PRICE_SPECIAL); //Uses variable to show users the different products and prices of said products available.
+			System.out.printf("%-8s%-24s%-2s%5.2f\n", "[C] for", ITEM_NAME_BASIC, "$", ITEM_PRICE_BASIC); //Uses variable to show users the different products and prices of said products available.
+			System.out.printf("%-8s%-12s\n", "[R] to", ITEM_NAME_RETURN); //Option to return to the previous menu.q
+
+			System.out.printf("%-60s\n", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); //Formating from prompt
+			System.out.printf("%-60s\n","Enter your selection here: "); //Prompts user to enter the product they are purchasing.
+			itemSelection = input.next().toUpperCase().charAt(0); //Takes the user's response and 1) capitalizes it and 2) limits the response to the first character.
+		}
+		return itemSelection; //Returns the itemSelection value.
+	}
+
+	//Method 11
+	public static int validateHowMany(Scanner input) //Uses Scanner to take input from user via method, value returning method.
+	{
+		int howMany = 0; //User's name. Blank as it requires an input from user. Local variable.
+		System.out.println("How many of the item are you buying?"); //Prompts user to enter the quantity of the item below.
+		howMany = input.nextInt(); //Input via user.
+		while (howMany <= 0) //validation method
+		{
+			System.out.println("Sorry that is an incorrect selection!"); //Error Message
+			System.out.println("Please try again."); //Error Message cont.
+			System.out.println("How many of the item are you buying?"); //Prompts user to enter the quantity of the item below.
+			howMany = input.nextInt(); //Input via user.
+		}
+		return howMany; //Returns the value of howMany.
+	}
+}
+
+
